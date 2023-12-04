@@ -15,7 +15,7 @@ public class EmailService {
 
     public void sendSimpleEmail(final Mail mail) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@gestionfoyer.com");
+        message.setFrom("chamakhghassen@gmail.com");
         message.setTo(mail.getTo());
         message.setSubject("Réinitialiser le mot de passe");
         message.setText(mail.getContent());
