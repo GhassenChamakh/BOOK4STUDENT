@@ -26,9 +26,8 @@ public class Universite implements Serializable {
     String adresse;
 
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "idFoyer")
     @JsonIgnore
+    @OneToOne(mappedBy = "universite")
     Foyer foyer;
 
     @OneToMany(mappedBy = "universite")

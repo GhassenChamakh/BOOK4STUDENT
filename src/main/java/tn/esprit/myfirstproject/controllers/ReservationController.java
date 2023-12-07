@@ -16,9 +16,4 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationController {
 
-
-
-
-
-
 }
