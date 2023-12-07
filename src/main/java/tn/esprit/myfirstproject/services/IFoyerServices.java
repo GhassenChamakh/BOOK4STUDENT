@@ -1,18 +1,23 @@
 package tn.esprit.myfirstproject.services;
 
+import tn.esprit.myfirstproject.entities.Bloc;
 import tn.esprit.myfirstproject.entities.Foyer;
 
 import java.util.List;
 
 public interface IFoyerServices {
+    List<Foyer> retrieveAllFoyers();
 
-    Foyer ajouterFoyer(Foyer foyer);
-    Foyer ajouterFoyerEtAffecterAUniversite (Foyer foyer, Long idUniversite) ;
-    Foyer updateFoyer(Foyer foyer);
-    List<Foyer> getAllFoyers();
-    Foyer getFoyerById(Long idFoyer);
+    Foyer addFoyer(Foyer b);
 
-    Foyer getFoyerByIdEtudiant(Long idEtudiant);
+    Foyer updateFoyer(Foyer b);
 
-    void deleteFoyer(Long idFoyer);
+    Foyer retrieveFoyer(long idFoyer);
+
+    void removeFoyer(long idFoyer);
+
+    public Bloc affecterBlocAFoyer(String nomBloc, String nomFoyer);
+
+    public Foyer ajouterFoyerEtAffecterAUniversite(Foyer foyer, long idUniversite);
+
 }

@@ -3,6 +3,7 @@ package tn.esprit.myfirstproject.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.myfirstproject.entities.Bloc;
 import tn.esprit.myfirstproject.entities.Foyer;
 import tn.esprit.myfirstproject.services.IFoyerServices;
 
@@ -14,40 +15,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoyerController {
 
-    private final IFoyerServices foyerService;
+  IFoyerServices iFoyerService;
 
-    @PostMapping("/add")
-    public Foyer addFoyer(@RequestBody Foyer foyer) {
-        return foyerService.ajouterFoyer(foyer);
+    @GetMapping("/afficherfoyers")
+    List<Foyer> retrieveAllFoyers() {
+        return iFoyerService.retrieveAllFoyers();
     }
 
-    @PostMapping("/add/{idUniversite}")
-    public Foyer ajouterFoyerEtAffecterAUniversite(@RequestBody Foyer foyer, @PathVariable Long idUniversite) {
-        return foyerService.ajouterFoyerEtAffecterAUniversite(foyer, idUniversite);
+    @PostMapping("/ajouterfoyer")
+    Foyer addFoyer(@RequestBody Foyer c) {
+        return iFoyerService.addFoyer(c);
     }
 
-    @PutMapping("/update")
-    public Foyer updateFoyer(@RequestBody Foyer foyer) {
-        return foyerService.updateFoyer(foyer);
+    @PutMapping("/modifierfoyer")
+    Foyer updateFoyer(@RequestBody Foyer c) {
+        return iFoyerService.updateFoyer(c);
     }
 
-    @GetMapping("/all")
-    public List<Foyer> getAllFoyers() {
-        return foyerService.getAllFoyers();
+    @GetMapping("/afficherfoyer/{idfoyer}")
+    Foyer retrieveFoyer(@PathVariable("idfoyer") long idFoyer) {
+        return iFoyerService.retrieveFoyer(idFoyer);
     }
 
-    @GetMapping("/{idFoyer}")
-    public Foyer getFoyerById(@PathVariable Long idFoyer) {
-        return foyerService.getFoyerById(idFoyer);
+    @DeleteMapping("/supprimerfoyer/{idfoyer}")
+    String removeFoyer(@PathVariable("idfoyer") long idFoyer) {
+        iFoyerService.removeFoyer(idFoyer);
+        return ("Foyer est supprimer");
     }
 
-    @GetMapping("/getFoyerByIdEtudiant/{idEtudiant}")
-    public Foyer getFoyerByIdEtudiant(@PathVariable Long idEtudiant) {
-        return foyerService.getFoyerByIdEtudiant(idEtudiant);
+    @PutMapping("/affecterBlocAFoyer/{nomBloc}/{nomFoyer}")
+    Bloc affecterBlocAFoyer(@PathVariable("nomBloc") String nomBloc, @PathVariable("nomFoyer") String nomFoyer) {
+        return iFoyerService.affecterBlocAFoyer(nomBloc, nomFoyer);
     }
 
-    @DeleteMapping("/delete/{idFoyer}")
-    public void deleteFoyer(@PathVariable Long idFoyer) {
-        foyerService.deleteFoyer(idFoyer);
+    @PostMapping("/ajouterFoyerEtAffecterAUniversite/{idUniversite}")
+    Foyer ajouterFoyerEtAffecterAUniversite(@RequestBody Foyer f, @PathVariable("idUniversite") Long idUniversite) {
+        return iFoyerService.ajouterFoyerEtAffecterAUniversite(f, idUniversite);
     }
 }

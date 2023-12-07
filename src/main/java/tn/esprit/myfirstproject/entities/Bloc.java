@@ -27,9 +27,9 @@ public class Bloc implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idFoyer")
     @JsonIgnore
-    Foyer foyer;
+    Foyer foyers;
 
-    @OneToMany(mappedBy = "bloc", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "blocs", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JsonIgnore
     Set<Chambre> chambres;
 

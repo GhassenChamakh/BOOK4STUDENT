@@ -15,68 +15,45 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class IUniversiteServicesImp implements IUniversiteServices {
-
-    private final IUniversiteRepository universiteRepository;
-    private final IFoyerRepository foyerRepository;
-
+    IUniversiteRepository universiteRepo;
+    IFoyerRepository foyerRepo;
 
     @Override
-    public Universite addUniversite(Universite universite) {
-        return universiteRepository.save(universite);
+    public List<Universite> retrieveAllUniversites() {
+        return universiteRepo.findAll();
     }
 
     @Override
-    public Universite updateUniversite(Universite universite) {
-        if (universite.getIdUniversite() != null) {
-            Universite existingUniversite = universiteRepository.findById(universite.getIdUniversite()).orElse(null);
-            if (existingUniversite != null) {
-                if (universite.getNomUniversite() != null) {
-                    existingUniversite.setNomUniversite(universite.getNomUniversite());
-                }
-                if (universite.getAdresse() != null) {
-                    existingUniversite.setAdresse(universite.getAdresse());
-                }
-                if (universite.getFoyer() != null) {
-                    existingUniversite.setFoyer(universite.getFoyer());
-                }
-                return universiteRepository.save(existingUniversite);
-            }
-        }
-        return null;
+    public Universite addUniversite(Universite b) {
+        return universiteRepo.save(b);
     }
 
     @Override
-    public List<Universite> getAllUniversites() {
-        return universiteRepository.findAll();
+    public Universite updateUniversite(Universite b) {
+        return universiteRepo.save(b);
     }
 
     @Override
-    public Universite getUniversiteById(Long idUniversite) {
-        return universiteRepository.findById(idUniversite).orElse(null);
+    public Universite retrieveUniversite(long idUniversite) {
+        return universiteRepo.findById(idUniversite).orElse(null);
     }
 
     @Override
-    public Universite getUniversiteByIdEtudiant(Long idEtudiant) {
-        return universiteRepository.getUniversiteByIdEtudiant(idEtudiant);
-    }
-
-
-    @Override
-    public Universite affecterFoyerAUniversite(Long idFoyer, String nomUniversite) {
-        Foyer foyer = foyerRepository.findById(idFoyer).orElse(null);
-
-        Universite universite = universiteRepository.findByNomUniversite(nomUniversite);
-
+    public Universite affecterFoyerAUniversite(long idFoyer, String nomUniversite) { //one to one
+        Foyer foyer = foyerRepo.findById(idFoyer).orElse(null);
+        Universite universite = universiteRepo.findByNomUniversite(nomUniversite);
         universite.setFoyer(foyer);
-        return universiteRepository.save(universite);
+        //universiteRepo.save(universite); not required with java 8
+        return universiteRepo.save(universite);
     }
 
     @Override
-    public Universite desaffecterFoyerAUniversite(Long idUniversite) {
-        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
-
+    public Universite desaffecterFoyerAUniversite(long idFoyer, long idUniversite) {
+        Foyer foyer = foyerRepo.findById(idFoyer).orElse(null);
+        Universite universite = universiteRepo.findUniversiteByIdUniversite(idUniversite);
         universite.setFoyer(null);
-        return universiteRepository.save(universite);
+        //universiteRepo.save(universite); not required with java 8
+        return universiteRepo.save(universite);
     }
 
 

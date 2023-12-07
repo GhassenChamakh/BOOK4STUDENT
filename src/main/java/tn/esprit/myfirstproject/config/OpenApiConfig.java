@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.info.Info;
                         email = "ghassen.chamakh@esprit.tn"
                 ),
                 title = "Gestion Foyer",
-                version = "1.0.1",
+                version = "2.0.0",
                 description = "SWAGGER : Gestion Foyer"
         )
 )

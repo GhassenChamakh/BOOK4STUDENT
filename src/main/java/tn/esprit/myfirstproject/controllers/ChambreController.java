@@ -15,36 +15,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChambreController {
 
-    private final IChambreServices chambreService;
+    IChambreServices iChambreService;
 
-    @PostMapping("/add")
-    public Chambre addChambre(@RequestBody Chambre chambre) {
-        return chambreService.addChambre(chambre);
+    @GetMapping("/afficherchambres")
+    List<Chambre> retrieveAllChambres() {
+        return iChambreService.retrieveAllChambres();
     }
 
-    @PutMapping("/update")
-    public Chambre updateChambre(@RequestBody Chambre chambre) {
-        return chambreService.updateChambre(chambre);
+    @PostMapping("/ajouterchambre")
+    Chambre addChambre(@RequestBody Chambre c) {
+        return iChambreService.addChambre(c);
     }
 
-    @GetMapping("/all")
-    public List<Chambre> getAllChambres() {
-        return chambreService.getAllChambres();
+    @PutMapping("/modifierchambre")
+    Chambre updateChambre(@RequestBody Chambre c) {
+        return iChambreService.updateChambre(c);
     }
 
-    @GetMapping("/{idChambre}")
-    public Chambre getChambreById(@PathVariable Long idChambre) {
-        return chambreService.getChambreById(idChambre);
+    @GetMapping("/afficherchambre/{idchambre}")
+    Chambre retrieveChambre(@PathVariable("idchambre") long idChambre) {
+        return iChambreService.retrieveChambre(idChambre);
     }
 
-
-    @GetMapping("/getChambresParBlocEtType/{idBloc}/{typeC}")
-    public List<Chambre> getChambresParBlocEtType(@PathVariable Long idBloc, @PathVariable TypeChambre typeC) {
-        return chambreService.getChambresParBlocEtType(idBloc, typeC);
+    @DeleteMapping("/supprimerchambre/{idchambre}")
+    String removeChambre(@PathVariable("idchambre") long idChambre) {
+        iChambreService.removeChambre(idChambre);
+        return ("Chambre est supprimer");
     }
 
-    @GetMapping("/getNombreChambresParBloc/{idBloc}")
-    public Long getNombreChambresParBloc(@PathVariable Long idBloc) {
-        return chambreService.getNombreChambresParBloc(idBloc);
+    @GetMapping("/getbynombloc/{nom}")
+    public List<Chambre> getChambreByNomBloc(@PathVariable("nom") String nom) {
+        return iChambreService.getChambreByNomBloc(nom);
+    }
+
+    @GetMapping("/getChambresParNomUniversite/{nomuniversite}")
+    public List<Chambre> getChambresParNomUniversite(@PathVariable("nomuniversite") String nomuniversite) {
+        return iChambreService.getChambresParNomUniversite(nomuniversite);
+    }
+
+    @GetMapping("/getChambresPartype/{type}")
+    public List<Chambre> getChambresParNomType(@PathVariable("type") TypeChambre type) {
+        return iChambreService.getChambreByType(type);
     }
 }
+

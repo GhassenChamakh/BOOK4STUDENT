@@ -5,8 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import tn.esprit.myfirstproject.entities.Universite;
 
 public interface IUniversiteRepository extends JpaRepository<Universite, Long>  {
-    Universite findByNomUniversite(String nomUniversite);
+    Universite findByNomUniversite(String nom);
 
     @Query("SELECT u.universite FROM Etudiant u WHERE u.id = :idEtudiant")
     Universite getUniversiteByIdEtudiant(Long idEtudiant);
+
+
+    Universite findUniversiteByIdUniversite(Long id);
 }

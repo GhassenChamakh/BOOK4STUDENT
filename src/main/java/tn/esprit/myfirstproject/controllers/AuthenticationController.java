@@ -46,7 +46,7 @@ public class AuthenticationController {
     etudiant.setCin(cin);
     etudiant.setUniversite(universite);
     etudiant.setDateNaissance(dateNaissance);
-
+    etudiant.setUniversite(universite);
     String originalFilename = file.getOriginalFilename();
     String uniqueFilename = UUID.randomUUID().toString() + "_" + originalFilename;
     Path fileNameAndPath = Paths.get(uploadDirectory, uniqueFilename);

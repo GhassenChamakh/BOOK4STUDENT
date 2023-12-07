@@ -5,13 +5,15 @@ import tn.esprit.myfirstproject.entities.Universite;
 import java.util.List;
 
 public interface IUniversiteServices {
-    Universite addUniversite(Universite universite);
-    Universite updateUniversite(Universite universite);
-    List<Universite> getAllUniversites();
-    Universite getUniversiteById(Long idUniversite);
+    List<Universite> retrieveAllUniversites();
 
-    Universite getUniversiteByIdEtudiant(Long idEtudiant);
+    Universite addUniversite(Universite b);
 
-    Universite affecterFoyerAUniversite(Long idFoyer, String nomUniversite);
-    Universite desaffecterFoyerAUniversite(Long idUniversite);
+    Universite updateUniversite(Universite b);
+
+    Universite retrieveUniversite(long idUniversite);
+
+    public Universite affecterFoyerAUniversite(long idFoyer, String nomUniversite);
+
+    public Universite desaffecterFoyerAUniversite(long idFoyer, long idUniversite);
 }

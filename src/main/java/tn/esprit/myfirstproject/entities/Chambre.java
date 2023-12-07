@@ -27,7 +27,7 @@ public class Chambre implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "idBloc")
-    Bloc bloc;
+    Bloc blocs;
 
     @OneToMany
     Set<Reservation> reservations;

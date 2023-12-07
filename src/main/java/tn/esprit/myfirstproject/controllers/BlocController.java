@@ -14,45 +14,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BlocController {
 
-    private final IBlocServices blocService;
-
-    @PostMapping("/add")
-    public Bloc addBloc(@RequestBody Bloc bloc) {
-        return blocService.addBloc(bloc);
+    IBlocServices iBlocService;
+    @GetMapping("/afficherblocs")
+    List<Bloc> retrieveAllBlocs() {
+        return iBlocService.retrieveAllBlocs();
     }
 
-    @PutMapping("/update")
-    public Bloc updateBloc(@RequestBody Bloc bloc) {
-        return blocService.updateBloc(bloc);
+    @PostMapping("/ajouterbloc")
+    Bloc addBloc(@RequestBody Bloc c) {
+        return iBlocService.addBloc(c);
     }
 
-    @GetMapping("/getAllBlocsByIdFoyer/{idFoyer}")
-    public List<Bloc> getAllBlocsByIdFoyer(@PathVariable Long idFoyer) {
-        return blocService.getAllBlocsByIdFoyer(idFoyer);
+    @PutMapping("/modifierbloc")
+    Bloc updateBloc(@RequestBody Bloc c) {
+        return iBlocService.updateBloc(c);
     }
 
-    @GetMapping("/all")
-    public List<Bloc> getAllBlocs() {
-        return blocService.getAllBlocs();
+    @GetMapping("/afficherbloc/{idbloc}")
+    Bloc retrieveBloc(@PathVariable("idbloc") long idBloc) {
+        return iBlocService.retrieveBloc(idBloc);
     }
 
-    @GetMapping("/{idBloc}")
-    public Bloc getBlocById(@PathVariable Long idBloc) {
-        return blocService.getBlocById(idBloc);
+    @DeleteMapping("/supprimerbloc/{idbloc}")
+    String deleteBloc(@PathVariable("idbloc") long idBloc) {
+        iBlocService.removeBloc(idBloc);
+        return ("Bloc est supprimer");
     }
 
-    @DeleteMapping("/delete/{idBloc}")
-    public void deleteBloc(@PathVariable Long idBloc) {
-        blocService.deleteBloc(idBloc);
-    }
-
-
-    @PutMapping("/affecterChambres/{idBloc}")
-    public Bloc affecterChambresABloc(@RequestBody List<Long> idChambre, @PathVariable Long idBloc) {
-        return blocService.affecterChambresABloc(idChambre, idBloc);
-    }
-    @PutMapping("/affecterBlocFoyer/{idBloc}/{idFoyer}")
-    public Bloc affecterBlocAFoyer(@PathVariable Long idBloc, @PathVariable Long idFoyer) {
-        return blocService.affecterBlocAFoyer(idBloc, idFoyer);
+    @PutMapping("/affecterchambreabloc/{numChambre}/{nomBloc}")
+    Bloc affecterChambresABloc(@PathVariable("numChambre") List<Long> numChambre, @PathVariable("nomBloc") String nomBloc) {
+        return iBlocService.affecterChambresABloc(numChambre, nomBloc);
     }
 }

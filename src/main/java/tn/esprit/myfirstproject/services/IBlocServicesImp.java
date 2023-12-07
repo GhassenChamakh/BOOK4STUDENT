@@ -18,82 +18,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IBlocServicesImp implements IBlocServices {
 
-    private final IBlocRepository blocRepository;
-    private final IChambreRepository chambreRepository;
-    private final IFoyerRepository foyerRepository;
-
+    IBlocRepository blocRepo;
+    IChambreRepository chambreRepo;
 
     @Override
-    public Bloc addBloc(Bloc bloc) {
-        return blocRepository.save(bloc);
+    public List<Bloc> retrieveAllBlocs() {
+        return blocRepo.findAll();
     }
 
     @Override
-    public Bloc updateBloc(Bloc bloc) {
-        if (bloc.getIdBloc() != null) {
-            Bloc existingBloc = blocRepository.findById(bloc.getIdBloc()).orElse(null);
-            if (existingBloc != null) {
-                if (bloc.getNomBloc() != null) {
-                    existingBloc.setNomBloc(bloc.getNomBloc());
-                }
-                if (bloc.getCapaciteBloc() != null) {
-                    existingBloc.setCapaciteBloc(bloc.getCapaciteBloc());
-                }
-                if (bloc.getChambres() != null) {
-                    existingBloc.setChambres(bloc.getChambres());
-                }
-                if (bloc.getFoyer() != null) {
-                    existingBloc.setFoyer(bloc.getFoyer());
-                }
-                return blocRepository.save(existingBloc);
-            }
+    public Bloc addBloc(Bloc b) {
+        return blocRepo.save(b);
+    }
+
+    @Override
+    public Bloc updateBloc(Bloc b) {
+        return blocRepo.save(b);
+    }
+
+    @Override
+    public Bloc retrieveBloc(long idBloc) {
+        return blocRepo.findById(idBloc).orElse(null);
+    }
+
+    @Override
+    public void removeBloc(long idBloc) {
+        blocRepo.deleteById(idBloc);
+    }
+
+    @Override
+    public Bloc affecterChambresABloc(List<Long> numChambre, String nomBloc) {
+        Bloc bloc = blocRepo.findBlocByNomBloc(nomBloc);
+        Chambre chambre;
+        for (long num : numChambre) {
+            //     (chambreRepo.findChambresByNumeroChambre(num)).setBlocs(bloc);
+            chambre = chambreRepo.findChambresByNumeroChambre(num);
+            chambre.setBlocs(bloc); //plus important set moins important(cardinalite)
+            chambreRepo.save(chambre);
         }
-        return null;
-    }
-
-    @Override
-    public List<Bloc> getAllBlocs() {
-        return blocRepository.findAll();
-    }
-
-    @Override
-    public List<Bloc> getAllBlocsByIdFoyer(Long idFoyer) {
-        return blocRepository.findAllByFoyerId(idFoyer);
-    }
-
-    @Override
-    public Bloc getBlocById(Long idBloc) {
-        return blocRepository.findById(idBloc).orElse(null);
-    }
-
-    @Override
-    public void deleteBloc(Long idBloc) {
-        blocRepository.deleteById(idBloc);
-    }
-
-
-    @Override
-    public Bloc affecterChambresABloc(List<Long> idChambre, Long idBloc) {
-        Bloc bloc = blocRepository.findById(idBloc).orElse(null);
-
-        for(Long id:idChambre){
-            Chambre chambre = chambreRepository.findById(id).orElse(null);
-            chambre.setBloc(bloc);
-            chambreRepository.save(chambre);
-        }
-
-        return blocRepository.save(bloc);
-    }
-
-    @Override
-    public Bloc affecterBlocAFoyer(Long idBloc, Long idFoyer) {
-        Bloc bloc = blocRepository.findById(idBloc).orElse(null);
-
-        Foyer foyer = foyerRepository.findById(idFoyer).orElse(null);
-
-        bloc.setFoyer(foyer);
-        blocRepository.save(bloc);
-
-        return bloc;
+        // return  blocRepo.save(bloc);
+        return blocRepo.findBlocByNomBlocs(nomBloc);
     }
 }
+

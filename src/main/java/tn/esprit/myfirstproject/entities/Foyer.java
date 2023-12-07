@@ -27,7 +27,7 @@ public class Foyer implements Serializable {
     @OneToOne(mappedBy = "foyer")
     Universite universite;
 
-    @OneToMany(mappedBy = "foyer", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "foyers", cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     Set<Bloc> blocs;
 
 }

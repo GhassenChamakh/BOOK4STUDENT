@@ -12,7 +12,5 @@ import java.util.List;
 
 public interface IReservationRepository extends JpaRepository<Reservation, Long>  {
 
-    List<Reservation> findAllByEstValide(boolean estValide);
-    @Query("SELECT r FROM Reservation r JOIN r.etudiants e WHERE e.id = :idEtudiant AND r.debutAnneeUniv <= :currentDate AND r.finAnneeUniv >= :currentDate")
-    Reservation getCurrentReservationByEtudiantId(Long idEtudiant, LocalDate currentDate);
+
 }

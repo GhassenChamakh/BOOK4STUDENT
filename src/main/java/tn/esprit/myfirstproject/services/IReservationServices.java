@@ -14,5 +14,4 @@ public interface IReservationServices {
     Reservation getCurrentReservationByEtudiantId(Long idEtudiant);
 
     Reservation ajouterReservation (Long idChambre, Long cinEtudiant) ;
-    Reservation annulerReservation (Long cinEtudiant) ;
 }

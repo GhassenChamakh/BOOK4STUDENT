@@ -14,6 +14,7 @@ import tn.esprit.myfirstproject.repositories.IEtudiantRepository;
 import tn.esprit.myfirstproject.repositories.IFoyerRepository;
 import tn.esprit.myfirstproject.repositories.IUniversiteRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,78 +23,56 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class IFoyerServicesImp implements IFoyerServices {
 
-    private final IFoyerRepository foyerRepository;
-    private final IUniversiteRepository universiteRepository;
-    private final IBlocRepository blocRepository;
-    private final IEtudiantRepository etudiantRepository;
+    IFoyerRepository foyerRepo;
+    IBlocRepository blocRepo;
+    IUniversiteRepository universiteRepo;
 
 
     @Override
-    public Foyer ajouterFoyer(Foyer foyer) {
-        return foyerRepository.save(foyer);
+
+    public List<Foyer> retrieveAllFoyers() {
+        return foyerRepo.findAll();
     }
 
     @Override
-    @Transactional
-    public Foyer ajouterFoyerEtAffecterAUniversite(Foyer foyer, Long idUniversite) {
-        Universite universite = universiteRepository.findById(idUniversite).orElse(null);
+    public Foyer addFoyer(Foyer b) {
+        return foyerRepo.save(b);
+    }
 
-        universite.setFoyer(foyer);
+    @Override
+    public Foyer updateFoyer(Foyer b) {
+        return foyerRepo.save(b);
+    }
 
-        for (Bloc bloc : foyer.getBlocs()) {
-            bloc.setFoyer(foyer);
-            blocRepository.save(bloc);
-        }
+    @Override
+    public Foyer retrieveFoyer(long idFoyer) {
+        return foyerRepo.findById(idFoyer).orElse(null);
+    }
 
+    @Override
+    public void removeFoyer(long idFoyer) {
+        foyerRepo.deleteById(idFoyer);
+    }
+
+    @Override
+    public Bloc affecterBlocAFoyer(String nomBloc, String nomFoyer) {
+        Bloc bloc = blocRepo.findBlocByNomBloc(nomBloc);
+        Foyer foyer = foyerRepo.findFoyerByNomFoyer(nomFoyer);
+        Set<Bloc> blocs = new HashSet<>();
+        blocs.add(bloc);
+        foyer.setBlocs(blocs);
+        foyerRepo.save(foyer);
+        return bloc;
+    }
+
+    @Override
+    public Foyer ajouterFoyerEtAffecterAUniversite(Foyer foyer, long idUniversite) {
+        this.addFoyer(foyer);
+        Universite universite = universiteRepo.findUniversiteByIdUniversite(idUniversite);
+        foyer.setUniversite(universite);
+        foyerRepo.save(foyer);
+        universiteRepo.save(universite);
         return foyer;
     }
 
-    @Override
-    public Foyer updateFoyer(Foyer foyer) {
-        if (foyer.getIdFoyer() != null) {
-            Foyer existingFoyer = foyerRepository.findById(foyer.getIdFoyer()).orElse(null);
-            if (existingFoyer != null) {
-                if (foyer.getNomFoyer() != null) {
-                    existingFoyer.setNomFoyer(foyer.getNomFoyer());
-                }
-                if (foyer.getCapaciteFoyer() != null) {
-                    existingFoyer.setCapaciteFoyer(foyer.getCapaciteFoyer());
-                }
-                if (foyer.getBlocs() != null) {
-                    existingFoyer.setBlocs(foyer.getBlocs());
-                }
-                if (foyer.getUniversite() != null) {
-                    existingFoyer.setUniversite(foyer.getUniversite());
-                }
-                return foyerRepository.save(existingFoyer);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public List<Foyer> getAllFoyers() {
-        return foyerRepository.findAll();
-    }
-
-    @Override
-    public Foyer getFoyerById(Long idFoyer) {
-        return foyerRepository.findById(idFoyer).orElse(null);
-    }
-
-    @Override
-    public Foyer getFoyerByIdEtudiant(Long idEtudiant) {
-        Etudiant etudiant = etudiantRepository.findById(idEtudiant).orElse(null);
-
-        Universite universite = etudiant.getUniversite();
-
-        Foyer foyer = universite.getFoyer();
-
-        return foyer;
-    }
-
-    @Override
-    public void deleteFoyer(Long idFoyer) {
-        foyerRepository.deleteById(idFoyer);
-    }
 }
